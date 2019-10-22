@@ -35,7 +35,7 @@ client.on('message', async msg => { // eslint-disable-line
 	//This is play!
 	if (command === 'play') {
 		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send('I\'m gonna say the N-Word!');
+		if (!voiceChannel) return msg.channel.send('Youre not in a voice channel!');
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
 		if (!permissions.has('CONNECT')) {
 			return msg.channel.send('I cannot connect to your voice channel, make sure I have the proper permissions!');
@@ -91,7 +91,7 @@ Please provide a value to select one of the search results ranging from 1-10.
 	else if (command === 'next') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing that I could skip for you.');
-		serverQueue.connection.dispatcher.end('Skip command has been used!');
+		serverQueue.connection.dispatcher.end('Next command has been used!');
 		return undefined;
 	} 
 	//
@@ -111,9 +111,8 @@ Please provide a value to select one of the search results ranging from 1-10.
 	} 
 
 	else if (command === 'nword') {
-		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
-		msg.voiceChannel.send("I'm gonna say the N-Word!!");
-
+		if (!msg.member.voiceChannel) return msg.channel.send('Youre not in a voice channel!');
+		msg.channel.send("I'm gonna say the N-Word!!");
 	}
 	//
 	
@@ -124,6 +123,7 @@ Please provide a value to select one of the search results ranging from 1-10.
 		serverQueue.songs = [];
 		serverQueue.connection.dispatcher.end('Stop command has been used!');
 		return undefined;
+		
 	} else if (command === 'volume') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
@@ -161,6 +161,7 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
 
 	return undefined;
 });
+
 
 async function handleVideo(video, msg, voiceChannel, playlist = false) {
 	const serverQueue = queue.get(msg.guild.id);
@@ -205,7 +206,7 @@ function play(guild, song) {
 	const serverQueue = queue.get(guild.id);
 
 	if (!song) {
-		serverQueue.voiceChannel.leave();
+		serverQueue.playing = false;
 		queue.delete(guild.id);
 		return;
 	}
