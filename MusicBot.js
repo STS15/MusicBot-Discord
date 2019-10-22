@@ -34,7 +34,7 @@ client.on('message', async msg => { // eslint-disable-line
 	//This is play!
 	if (command === 'play') {
 		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send('Youre not in a voice channel!');
+		if (!voiceChannel) return msg.channel.send('I\m REALLY gonna say the N-Word!!!');
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
 		if (!permissions.has('CONNECT')) {
 			return msg.channel.send('I cannot connect to your voice channel, make sure I have the proper permissions!');
