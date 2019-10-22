@@ -117,6 +117,7 @@ Please provide a value to select one of the search results ranging from 1-10.
 	}
 
 	else if (command === 'cbt'){
+		if (!msg.member.voiceChannel) return msg.channel.send('I\'m gonna say the N-Word!!');
 		url="https://youtu.be/EbwRFcoEugQ"
 		try {
 				var video = await youtube.getVideo(url);
