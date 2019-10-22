@@ -112,7 +112,7 @@ Please provide a value to select one of the search results ranging from 1-10.
 
 	else if (command === 'nword') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
-		msg.channel.send("/tts I'm gonna say the N-Word!!");
+		msg.voiceChannel.send("I'm gonna say the N-Word!!");
 
 	}
 	//
