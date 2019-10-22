@@ -20,7 +20,6 @@ client.on('disconnect', () => console.log('I just disconnected, making sure you 
 client.on('reconnecting', () => console.log('I am reconnecting now!'));
 
 client.on('message', async msg => { // eslint-disable-line
-	if (msg.author.bot) return undefined;
 	if (!msg.content.startsWith(PREFIX)) return undefined;
 
 	const args = msg.content.split(' ');
@@ -111,10 +110,13 @@ Please provide a value to select one of the search results ranging from 1-10.
 	} 
 
 	else if (command === 'nword') {
-		if (!msg.member.voiceChannel) return msg.channel.send('Youre not in a voice channel!');
+		if (!msg.member.voiceChannel) return msg.channel.send('I\'m gonna say the N-Word!!!');
 		msg.channel.send("I'm gonna say the N-Word!!");
 	}
 	//
+	else if (command=== 'cbt') {
+		msg.channel.send("-play https://youtu.be/EbwRFcoEugQ")
+	}
 	
 	//This is stop
 	else if (command === 'stop') {
