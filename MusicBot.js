@@ -150,7 +150,8 @@ Please provide a value to select one of the search results ranging from 1-10.
 			}
 			return handleVideo(video, msg, voiceChannel);
 		}
-	} 
+	}
+
 	//
 	
 	//This is stop
@@ -163,10 +164,10 @@ Please provide a value to select one of the search results ranging from 1-10.
 	} else if (command === 'volume') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-		if (!args[1]) return msg.channel.send(`The current volume is: **${serverQueue.volume}**`);
+		if (!args[1]) return msg.channel.send('The current volume is:' **${serverQueue.volume}**);
 		serverQueue.volume = args[1];
 		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 10);
-		return msg.channel.send(`I set the volume to: **${args[1]}**`);
+		return msg.channel.send('I set the volume to:' **${args[1]}**);
 	} else if (command === 'help') {
 		msg.channel.send('**WELCOME TO SHITTY MUSIC FROM JACOB!**\nUse **-** for commands.\n-help [This command]\n-play (url) [Plays the youtube video specified]\n-stop [Stops bot from making noise and removes from voice chat]\n-skip [Next song in queue]\n-next\n-volume (1-10) **Warning this can get really loud**\n-queue [Displays songs in queue]\n-pause\n-resume');
 	} else if (command === 'np') {
