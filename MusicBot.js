@@ -35,7 +35,7 @@ client.on('message', async msg => { // eslint-disable-line
 	//This is play!
 	if (command === 'play') {
 		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send('I\'m sorry but you need to be in a voice channel to play music!');
+		if (!voiceChannel) return msg.channel.send('I\'m gonna say the N-Word!');
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
 		if (!permissions.has('CONNECT')) {
 			return msg.channel.send('I cannot connect to your voice channel, make sure I have the proper permissions!');
@@ -61,9 +61,7 @@ client.on('message', async msg => { // eslint-disable-line
 					let index = 0;
 					msg.channel.send(`
 __**Song selection:**__
-
 ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-
 Please provide a value to select one of the search results ranging from 1-10.
 					`);
 					// eslint-disable-next-line max-depth
@@ -108,9 +106,15 @@ Please provide a value to select one of the search results ranging from 1-10.
 	//
 	//
 	//This is 
-		else if (command === '7') {
+	else if (command === '7') {
 		msg.channel.send('7');
 	} 
+
+	else if (command === 'nword') {
+		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
+		msg.channel.send("/tts I'm gonna say the N-Word!!");
+
+	}
 	//
 	
 	//This is stop
@@ -136,9 +140,7 @@ Please provide a value to select one of the search results ranging from 1-10.
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 		return msg.channel.send(`
 __**Song queue:**__
-
 ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
-
 **Now playing:** ${serverQueue.songs[0].title}
 		`);
 	} else if (command === 'pause') {
@@ -174,7 +176,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 			voiceChannel: voiceChannel,
 			//connection: null,
 			songs: [],
-			volume: 5,
+			volume: 2,
 			playing: true
 		};
 		queue.set(msg.guild.id, queueConstruct);
