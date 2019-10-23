@@ -20,8 +20,8 @@ client.on('disconnect', () => console.log('I just disconnected, making sure you 
 client.on('reconnecting', () => console.log('I am reconnecting now!'));
 
 client.on('message', async msg => { // eslint-disable-line
+	//if (msg.author.bot) return undefined;
 	if (!msg.content.startsWith(PREFIX)) return undefined;
-
 	const args = msg.content.split(' ');
 	const searchString = args.slice(1).join(' ');
 	const url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
@@ -34,7 +34,7 @@ client.on('message', async msg => { // eslint-disable-line
 	//This is play!
 	if (command === 'play') {
 		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send('I\m REALLY gonna say the N-Word!!!');
+		if (!voiceChannel) return msg.channel.send('I\m going to say the n-word!');
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
 		if (!permissions.has('CONNECT')) {
 			return msg.channel.send('I cannot connect to your voice channel, make sure I have the proper permissions!');
@@ -50,18 +50,20 @@ client.on('message', async msg => { // eslint-disable-line
 				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
 				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
 			}
-			return msg.channel.send(`Playlist: **${playlist.title}** has been added to the queue!`);
+			return
+			msg.channel.send(`Playlist: **${playlist.title}** has been added to the queue!`);
+			
 		} else {
 			try {
 				var video = await youtube.getVideo(url);
 			} catch (error) {
 				try {
-					var videos = await youtube.searchVideos(searchString, 10);
+					var videos = await youtube.searchVideos(searchString, 5);
 					let index = 0;
 					msg.channel.send(`
 __**Song selection:**__
 ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-Please provide a value to select one of the search results ranging from 1-10.
+Please provide a value to select one of the search results ranging from 1-5.
 					`);
 					// eslint-disable-next-line max-depth
 					try {
@@ -110,18 +112,36 @@ Please provide a value to select one of the search results ranging from 1-10.
 	} 
 
 	else if (command === 'nword') {
-		if (!msg.member.voiceChannel) return msg.channel.send('I\'m gonna say the N-Word!!!');
 		msg.channel.send("I'm gonna say the N-Word!!");
 	}
-	//
-	else if (command=== 'cbt') {
+	else if (command === 'hardr') {
+		msg.channel.send("May god have mercy on you...");	
+		msg.channel.send("Yes officers, this racist right here.");
+		msg.channel.send("Sir, I'm gonna need to ask you to come with me.");
+		msg.channel.send("You're under arrest.");
+		msg.channel.send("Fuq");			
+	}
+	
+	else if (command === 'join') {
+		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
+		serverQueue.voiceChannel.join();
+		msg.channel.send("Joined voice channel!");
+	}
+	else if (command === 'leave') {
+		serverQueue.voiceChannel.leave();
+		msg.channel.send("Left voice channel!");
+	}
+		else if (command=== 'cbt') {
 		msg.channel.send("-play https://youtu.be/EbwRFcoEugQ")
 	}
+	//This is stop
+	//
 	
 	//This is stop
 	else if (command === 'stop') {
 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 		if (!serverQueue) return msg.channel.send('There is nothing playing that I could stop for you.');
+		//serverQueue.playing = false;
 		serverQueue.songs = [];
 		serverQueue.connection.dispatcher.end('Stop command has been used!');
 		return undefined;
@@ -131,14 +151,20 @@ Please provide a value to select one of the search results ranging from 1-10.
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 		if (!args[1]) return msg.channel.send(`The current volume is: **${serverQueue.volume}**`);
 		serverQueue.volume = args[1];
-		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 10);
+		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 20);
 		return msg.channel.send(`I set the volume to: **${args[1]}**`);
-	} else if (command === 'help') {
+	} 
+	
+	else if (command === 'help') {
 		msg.channel.send('**WELCOME TO SHITTY MUSIC FROM JACOB!**\nUse **-** for commands.\n-help [This command]\n-play (url) [Plays the youtube video specified]\n-stop [Stops bot from making noise and removes from voice chat]\n-skip [Next song in queue]\n-next\n-volume (1-10) **Warning this can get really loud**\n-queue [Displays songs in queue]\n-pause\n-resume');
-	} else if (command === 'np') {
+	} 
+	
+	else if (command === 'now') {
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 		return msg.channel.send(`Playing: **${serverQueue.songs[0].title}**`);
-	} else if (command === 'queue') {
+	} 
+	
+	else if (command === 'queue') {
 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 		return msg.channel.send(`
 __**Song queue:**__
@@ -177,9 +203,9 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		const queueConstruct = {
 			textChannel: msg.channel,
 			voiceChannel: voiceChannel,
-			//connection: null,
+			connection: null,
 			songs: [],
-			volume: 2,
+			volume: 1.5,
 			playing: true
 		};
 		queue.set(msg.guild.id, queueConstruct);
@@ -224,7 +250,13 @@ function play(guild, song) {
 		.on('error', error => console.error(error));
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
-	serverQueue.textChannel.send(`Playing: **${song.title}**`);
+	serverQueue.textChannel.send(`Playing: **${song.title}**`)
+			.then(function (message) {
+				message.react("⏭")
+				message.react("⏯")
+				message.react("⏹")
+			
+			});
 }
 
 client.login(TOKEN);
