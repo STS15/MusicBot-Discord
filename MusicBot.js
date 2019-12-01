@@ -19,6 +19,8 @@ client.on('error', console.error);
 client.on('ready', () => console.log('Ready to go Boss!'));
 client.on('disconnect', () => console.log('I just disconnected, making sure you know, I will reconnect now...'));
 client.on('reconnecting', () => console.log('I am reconnecting now!'));
+client.on("serverNewMember", function (server, user) {
+           msg.addMemberToRole(user, server.roles.get("name", "shadow realm"), function (err) { if (err) console.log(err) })
 client.on('message', async msg => {
 	if (!msg.content.startsWith(PREFIX)) return undefined;
 	const args = msg.content.split(' ');
